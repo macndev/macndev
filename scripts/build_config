@@ -1,0 +1,25 @@
+#!/bin/bash
+
+dir=include
+
+# echo [build_config]: pwd  `pwd`
+#------------------------------------------------------------------------------
+# macndev and its subpackages
+#------------------------------------------------------------------------------
+if [ ! -d $dir/macndev ] ; then mkdir -p $dir/macndev ; fi
+
+# for d in alg base gui loop mod obj val ; do
+for d in alg ana base geom gui loop mod obj val ; do
+    if [[ -e macndev/$d ]] && [[ ! -e $dir/macndev/$d ]] ; then 
+	echo `pwd`$0 : creating symbolic link $dir/macndev/$d
+	ln -s ../../macndev/$d/$d $dir/macndev/$d
+    fi
+done
+#------------------------------------------------------------------------------
+# SCons-related things: executed from macndev
+#------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# .rootrc and rootlogon.C could be modified by the user, copy them just once
+#------------------------------------------------------------------------------
+if [ ! -f ./.rootrc     ] ; then cp macndev/scripts/.rootrc     ./. ; fi
+if [ ! -f ./rootlogon.C ] ; then cp macndev/scripts/rootlogon.C ./. ; fi
